@@ -23,23 +23,23 @@ location_type_switcher = {
 
 
 class WeatherData:
-	prev_call = None
-	curr_call = None
+	_prev_call = None
+	_curr_call = None
 
-	last_updated = None
+	_last_updated = None
 
-	location = None
-	location_type = None
+	_location = None
+	_location_type = None
 
 	def __init__(self, location, location_type):
-		self.location = location
-		self.location_type = location_type
+		self._location = location
+		self._location_type = location_type
 
 
 	# Change to a different location
 	def change_location(self, location, location_type):
-		self.location = location
-		self.location_type = location_type
+		self._location = location
+		self._location_type = location_type
 
 
 	# Get the current weather
@@ -49,7 +49,7 @@ class WeatherData:
 		curr_time = datetime.utcnow()
 
 		# If enough time has passed since the last call, get an update
-		if (self.last_updated == None or more_than_x_mins(self.last_updated, curr_time, mins_between_updates)):
+		if (self._last_updated == None or more_than_x_mins(self._last_updated, curr_time, mins_between_updates)):
 
 			# Get the request from the server
 			response = requests.get(self.get_complete_url())
@@ -61,17 +61,20 @@ class WeatherData:
 
 			# Otherwise, update the object
 			else:
-				self.prev_call = self.curr_call
-				self.curr_call = x
-				self.last_updated = curr_time
+				self._prev_call = self._curr_call
+				self._curr_call = x
+				self._last_updated = curr_time
 
 		# Return the most recent weather call
-		return self.curr_call
+		return self._curr_call
 
 
 	# Get the complete API URL to read data from
 	def get_complete_url(self):
-		return api_url + "&" + (location_type_switcher[self.location_type] % self.location)
+		return api_url + "&" + (location_type_switcher[self._location_type] % self._location)
+
+	def get_location(self):
+		return (self._location, self._location_type)
 
 
 
