@@ -40,6 +40,7 @@ class WeatherData:
 	def change_location(self, location, location_type):
 		self._location = location
 		self._location_type = location_type
+		self._last_updated = None
 
 
 	# Get the current weather
