@@ -45,7 +45,7 @@ class WeatherData:
 
 
 	# Get the current weather
-	def get_weather(self):
+	def update_weather(self):
 
 		# Get the current time - used to determine when to update
 		curr_time = datetime.utcnow()
@@ -70,11 +70,54 @@ class WeatherData:
 		# Return the most recent weather call
 		return self._curr_call
 
+	def get_weather(self):
+
+		self.update_weather()
+
+		(daytime, percent) = self.get_daytime()
+
+		return {
+			"category": self.get_category(),
+
+			"time": {
+				"dayOrNight": daytime,
+				"percent": percent,
+				"sunrise": self._curr_call["sys"]["sunrise"],
+				"sunset":  self._curr_call["sys"]["sunset"],
+			},
+
+			"temp": self.get_temperature(),
+
+			"pressure": self._curr_call["main"]["pressure"],
+			"humidity": self._curr_call["main"]["humidity"],
+
+			"wind": self._curr_call["wind"],
+			"clouds": self._curr_call["clouds"]["all"],
+
+			"visibility": self._curr_call["visibility"],
+		}
+
+
+	def get_category(self):
+
+		# Update the weather
+		self.update_weather()
+
+		# Get the weather ID
+		return self._curr_call["weather"][0]["main"]
+
+
+	def get_temperature(self):
+
+		self.update_weather()
+
+		return self._curr_call["main"]["feels_like"]
+
 
 	def get_daytime(self):
 
 		# Update the current weather
-		self.get_weather()
+		self.update_weather()
 
 		# Get sunrise, sunset, and current time
 		sunrise = self._curr_call["sys"]["sunrise"]
