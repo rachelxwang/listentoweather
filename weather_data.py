@@ -1,5 +1,6 @@
 import requests, json
 from datetime import datetime
+from time import time
 
 # The API Key and base URL to access the API
 api_key = "815896cb334c3837807948ed79b6d947"
@@ -68,6 +69,30 @@ class WeatherData:
 
 		# Return the most recent weather call
 		return self._curr_call
+
+
+	def get_daytime(self):
+
+		# Update the current weather
+		self.get_weather()
+
+		# Get sunrise, sunset, and current time
+		sunrise = self._curr_call["sys"]["sunrise"]
+		sunset = self._curr_call["sys"]["sunset"]
+		current = int(time())
+
+		# Calculate whether it's day or night
+		day_time = ""
+		if (sunrise < sunset):
+			day_time = "night" if (current > sunset) else "day"
+		else:
+			day_time = "day" if (current > sunrise) else "night"
+
+		# Calculate percentage into the day/night
+		percent = ((current - sunrise) / (sunset - sunrise))
+
+		# Return these as a tuple
+		return (day_time, percent)
 
 
 	# Get the complete API URL to read data from
