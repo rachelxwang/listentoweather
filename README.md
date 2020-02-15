@@ -1,2 +1,2 @@
 # listentoweather
-uncommon hacks 2020 project
+Uncommon Hacks 2020 Project
