@@ -21,15 +21,6 @@ def root():
 
 datastore_client = datastore.Client()
 
-def store_time(dt):
-    entity = datastore.Entity(key=datastore_client.key('visit'))
-    entity.update({
-        'timestamp': dt
-    })
-
-    datastore_client.put(entity)
-
-
 def fetch_times(limit):
     query = datastore_client.query(kind='visit')
     query.order = ['-timestamp']
@@ -38,6 +29,13 @@ def fetch_times(limit):
 
     return times
 
+def store_time(dt):
+    entity = datastore.Entity(key=datastore_client.key('visit'))
+    entity.update({
+        'timestamp': dt
+    })
+
+    datastore_client.put(entity)
 
 if __name__ == '__main__':
     # This is used when running locally only. When deploying to Google App
