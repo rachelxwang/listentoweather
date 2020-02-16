@@ -148,7 +148,8 @@ class WeatherData:
 			day_time = "day" if (current > sunrise) else "night"
 
 		# Calculate percentage into the day/night
-		percent = ((current - sunrise) / (sunset - sunrise))
+		(last_time, next_time) = (sunrise, sunset) if (day_time == "day") else (sunset, sunrise + (24*60*60))
+		percent = ((current - last_time) / (next_time - last_time))
 
 		# Return these as a tuple
 		return (day_time, percent)
