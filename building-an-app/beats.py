@@ -197,7 +197,8 @@ def play(w):
         notes+=notes
     seq = NoteSeq(notes)
     midi.seq_notes(seq,track=3)
-    midi.write("./building-an-app/music.mid")
+    midi.write("./music.mid")
+    # midi.write("./building-an-app/music.mid")
 
 test = weather_data.WeatherData("chicago", "city")
 

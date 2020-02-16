@@ -164,9 +164,9 @@ class WeatherData:
 	def get_location(self):
 		return (self._location, self._location_type)
 
-	def get_weather_id(self):
-		self.update_weather()
-		return self._curr_call["weather"]["id"]
+	# def get_weather_id(self):
+	# 	self.update_weather()
+	# 	return self._curr_call["weather"]["id"]
 
 
 

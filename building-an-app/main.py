@@ -1,6 +1,8 @@
 import datetime
-#import beats
-#import weather_data
+import beats
+import weather_data
+import pygame
+# import play_midi
 
 from flask import Flask, render_template, request
 from google.cloud import datastore
@@ -11,14 +13,30 @@ app = Flask(__name__)
 @app.route('/', methods=["GET", "POST"])
 def index():
     city = ""
+    weather = weather_data.WeatherData("chicago", "city")
     if request.method == 'POST':
         city = request.form.get("city_holder", None)
+        weather = weather_data.WeatherData(city, "city")
+        #times = NULL
+        #weather = NULL
 
-    if city:
-        beats.play(weather_data.WeatherData(city, "city"));
+        beats.play(weather_data.WeatherData(city, "city"))
 
-    return render_template('index.html', times=times, weather=weather)
+        def play_but_for_real():
+            #pygame.mixer.pre_init(44100, 16, 2, 4096)
+            pygame.init()
 
+            pygame.mixer.music.load("./music.mid")
+            pygame.mixer.music.play()
+
+            while pygame.mixer.music.get_busy():
+                pygame.time.wait(1000)
+
+        play_but_for_real()
+    
+    return render_template('index.html', weather=weather)
+
+   
 
 
 def root():
