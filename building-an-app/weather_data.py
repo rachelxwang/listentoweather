@@ -90,7 +90,7 @@ class WeatherData:
 			"time": {
 				"dayOrNight": daytime,
 				"percent": percent,
-				"hour": datetime.fromtimestamp(self._curr_call["dt"]).hour,
+				"hour": datetime.utcfromtimestamp(int(time()) + self._curr_call["timezone"]).hour,
 				"sunrise": self._curr_call["sys"]["sunrise"],
 				"sunset":  self._curr_call["sys"]["sunset"],
 			},
@@ -163,6 +163,10 @@ class WeatherData:
 
 	def get_location(self):
 		return (self._location, self._location_type)
+
+	def get_weather_id(self):
+		self.update_weather()
+		return self._curr_call["weather"]["id"]
 
 
 
