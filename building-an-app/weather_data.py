@@ -90,7 +90,7 @@ class WeatherData:
 			"time": {
 				"dayOrNight": daytime,
 				"percent": percent,
-				"hour": datetime.fromtimestamp(self._curr_call["dt"]).hour,
+				"hour": datetime.utcfromtimestamp(int(time()) + self._curr_call["timezone"]).hour,
 				"sunrise": self._curr_call["sys"]["sunrise"],
 				"sunset":  self._curr_call["sys"]["sunset"],
 			},
