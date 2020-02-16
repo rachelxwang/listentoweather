@@ -1,4 +1,6 @@
 import datetime
+import beats
+import weather_data
 
 from flask import Flask, render_template
 from google.cloud import datastore

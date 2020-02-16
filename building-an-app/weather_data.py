@@ -131,6 +131,7 @@ class WeatherData:
 		return self._curr_call["main"]["feels_like"]
 
 
+
 	def get_daytime(self):
 
 		# Update the current weather
