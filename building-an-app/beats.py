@@ -39,7 +39,7 @@ for i in range(4):
     beat1_top.append(Note(NOTES["A"],4,0.25, volume=60))
 beat1_bottom = [Rest(0.625), Note(NOTES["E"],5,0.125), Rest(0.125), Note(NOTES["E"],5,0.125)]
 
-for i in range(4):
+for i in range(6):
     beat1_top+=beat1_top
     beat1_bottom+=beat1_bottom
 
@@ -71,13 +71,14 @@ beat2_2 = [
     Note(NOTES["C"],4,0.125),
     Rest(0.125),
 ]
+beat2_2+=beat2_2
 
 beat2_3 = []
 for i in range(16):
     beat2_3.append(Note(NOTES["C"],5,0.0625,volume=60))
     beat2_3.append(Rest(0.0625))
 
-for i in range(4):
+for i in range(5):
     beat2_1+=beat2_1
     beat2_2+=beat2_2
     beat2_3+=beat2_3
@@ -117,15 +118,7 @@ beat3_4 = [
     Rest(0.25)
 ]
 
-'''
-for i in range(4):
-    beat3_2.append(Rest(0.0625))
-    beat3_2.append(Rest(0.0625))
-    beat3_2.append(Rest(0.0625))
-    beat3_2.append(Note(NOTES["G"],5,0.0625))
-'''
-
-for i in range(4):
+for i in range(6):
     beat3_4+=beat3_4
     beat3_3+=beat3_3
     beat3_2+=beat3_2
@@ -204,8 +197,8 @@ def play(w):
         notes+=notes
     seq = NoteSeq(notes)
     midi.seq_notes(seq,track=3)
-    midi.write("music.mid")
+    midi.write("./building-an-app/music.mid")
 
-test = weather_data.WeatherData("miami", "city")
+test = weather_data.WeatherData("chicago", "city")
 
 play(test)
