@@ -2,13 +2,25 @@ import datetime
 import beats
 import weather_data
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from google.cloud import datastore
 
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/', methods=["GET", "POST"])
+def index():
+    city = ""
+    if request.method == 'POST':
+        city = request.form.get("city_holder", None)
+
+    if city:
+        beats.play(weather_data.WeatherData(city, "city"));
+
+    return render_template('index.html', times=times, weather=weather)
+
+
+
 def root():
     # Store the current access time in Datastore.
     store_time(datetime.datetime.now())
@@ -16,8 +28,11 @@ def root():
     # Fetch the most recent 10 access times from Datastore.
     times = fetch_times(10)
 
+    weather = weather_data.WeatherData("chicago", "city")
+
     return render_template(
-        'index.html', times=times)
+        'index.html', times=times, weather=weather)
+
 
 datastore_client = datastore.Client()
 
