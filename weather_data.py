@@ -1,6 +1,7 @@
 import requests, json
 from datetime import datetime
 from time import time
+from ipstack import GeoLookup
 
 # The API Key and base URL to access the API
 api_key = "815896cb334c3837807948ed79b6d947"
@@ -21,6 +22,13 @@ location_type_switcher = {
 	"coords":  "lat=%s&lon=%s",
 	"zipcode": "zip=%s,%s"
 }
+
+
+def current_location_weather():
+	geo_lookup = GeoLookup("9ff825aee8c78758e19180acda87060c")
+	location = geo_lookup.get_own_location()
+	coords = (location["latitude"], location["longitude"])
+	return WeatherData(coords, "coords")
 
 
 class WeatherData:
@@ -104,8 +112,8 @@ class WeatherData:
 			# Units: Percentage
 			"clouds": self._curr_call["clouds"]["all"],
 
-			# Units: No idea
-			"visibility": self._curr_call["visibility"],
+			# # Units: No idea
+			# "visibility": self._curr_call["visibility"],
 		}
 
 
