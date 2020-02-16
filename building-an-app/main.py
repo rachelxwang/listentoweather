@@ -17,6 +17,8 @@ def index():
     if request.method == 'POST':
         city = request.form.get("city_holder", None)
         weather = weather_data.WeatherData(city, "city")
+        (wtime, p) = weather.get_daytime()
+        weather_icon = ("http://openweathermap.org/img/wn/%s%s@2x.png" % (weather.get_weather_id(), "d" if wtime == "day" else "n" ))
         #times = NULL
         #weather = NULL
 

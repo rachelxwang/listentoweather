@@ -3,6 +3,10 @@
 <head>
   <title>Listen to Weather</title>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script>
+    
+  </script>
+
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -20,6 +24,9 @@
   	Enter a city: <input type="text" name="city_holder">
   	<input type="submit">
   </form>
+
+
+  <img id="weather_icon" src="{{weather_icon}}">
 
 
 
