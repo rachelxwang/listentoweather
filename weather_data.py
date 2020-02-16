@@ -111,9 +111,6 @@ class WeatherData:
 
 			# Units: Percentage
 			"clouds": self._curr_call["clouds"]["all"],
-
-			# # Units: No idea
-			# "visibility": self._curr_call["visibility"],
 		}
 
 
