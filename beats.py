@@ -157,7 +157,9 @@ def play(category):
 def play(w):
     data = w.get_weather()
     print(data)
-    instrument = int(str(data["time"]["percent"]).replace(".",''))%104
+    instrs = [41,40,42,32,46,24,74,73,70,68,60,65,57,56,58,22,0,12,13,89,96,94,101,9]
+    #instrument = int(str(data["time"]["percent"]).replace(".",''))%104
+    instrument = instrs[data["time"]["hour"]-1]
     tempo = None
     midi = None
     if data["category"]=="Thunderstorm" or data["category"]=="Clouds":
@@ -188,17 +190,22 @@ def play(w):
     #octave = int(data["time"]["percent"]*10)
     octave=5
     #instrument = int(data["time"]["sunrise"]%128)
-    rhymthm = [0.125,0.125,0.25,0.125,0.125,0.25]
+    rhythm0 = [0.125,0.125,0.25,0.125,0.125,0.25]
+    rhythm1 = [0.125,0.25,0.125,0.25,0.25]
+    rhythm2 = [0.0625,0.0625,0.0625,0.0625,0.125,0.125,0.25,0.25]
+    possible_rhythms = [rhythm0,rhythm1,rhythm2]
+    #rhythm = possible_rhythms[data["humidity"]%3]
+    rhythm = rhythm0+rhythm0+rhythm2+rhythm1
     pitches = str(data["temp"]).replace('.','')
     notes = []
-    for i in range(len(rhymthm)):
-        notes.append(Note(value=int(pitches[i%len(pitches)]),octave=octave,dur=rhymthm[i],volume=60))
+    for i in range(len(rhythm)):
+        notes.append(Note(value=int(pitches[i%len(pitches)]),octave=octave,dur=rhythm[i],volume=60))
     for i in range(4):
         notes+=notes
     seq = NoteSeq(notes)
     midi.seq_notes(seq,track=3)
     midi.write("music.mid")
 
-test = weather_data.WeatherData("abu dhabi", "city")
+test = weather_data.WeatherData("miami", "city")
 
 play(test)
