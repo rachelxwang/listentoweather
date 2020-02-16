@@ -16,5 +16,14 @@
   <h1>Listen to music!</h1>
   <a href="#" class="myButton">Play</a>
 
+  <form action="/" method="post">
+  	Enter a city: <input type="text" name="city_holder">
+  	<input type="submit">
+  </form>
+
+  {{ weather.get_weather_id() }}
+
+  <img src="{{weather.get_weather_icon()}}">
+
 </body>
 </html>
