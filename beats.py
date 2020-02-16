@@ -1,16 +1,7 @@
 from pyknon.music import *
 from pyknon.genmidi import *
+import weather_data
 
-#C_note = Note(0, 5, dur=0.25)
-#quarter_rest = Rest(0.25)
-#A_note = Note(9, 5, 0.25)
-#seq = NoteSeq([C_note, A_note, quarter_rest, C_note])
-#
-#midi = Midi(1, tempo=120)
-#midi.seq_notes(seq, track=0)
-#midi.write("simple_noteseq.mid")
-
-OCTAVES = [2,3,4,5,6,7,8]
 NOTES = {
     "C":0,
     "Csharp":1,
@@ -43,21 +34,21 @@ chord = major_chord(1,4,0.25)
 chord2 = major_chord(NOTES["Csharp"],5,0.25)
 
 ### beat 1
-### NOTE: working on changing this one
 beat1_top = []
 for i in range(4):
-    beat1_top.append(Note(NOTES["C"],4,0.25))
-beat1_bottom = [Rest(0.875), Note(NOTES["G"],4,0.125)]
+    beat1_top.append(Note(NOTES["A"],4,0.25, volume=60))
+beat1_bottom = [Rest(0.625), Note(NOTES["E"],5,0.125), Rest(0.125), Note(NOTES["E"],5,0.125)]
 
 for i in range(4):
-    beat1_top = beat1_top+beat1_top
-    beat1_bottom = beat1_bottom+beat1_bottom
+    beat1_top+=beat1_top
+    beat1_bottom+=beat1_bottom
 
 b1_seq_top = NoteSeq(beat1_top)
 b1_seq_bottom = NoteSeq(beat1_bottom)
-b1_midi = Midi(number_tracks=2, instrument=[118,118], tempo=100)
+'''b1_midi = Midi(number_tracks=3, instrument=[115,115,116], tempo=110)
 b1_midi.seq_notes(b1_seq_top,track=0)
 b1_midi.seq_notes(b1_seq_bottom,track=1)
+b1_midi.seq_notes(b1_seq_top,track=2)'''
 #b1_midi.write("music.mid")
 
 ### beat 2
@@ -94,8 +85,120 @@ for i in range(4):
 b2_seq_1 = NoteSeq(beat2_1)
 b2_seq_2 = NoteSeq(beat2_2)
 b2_seq_3 = NoteSeq(beat2_3)
-b2_midi = Midi(number_tracks=3, instrument=[113,116,117], tempo = 65)
+"""b2_midi = Midi(number_tracks=3, instrument=[113,116,117], tempo = 65)
 b2_midi.seq_notes(b2_seq_1,track=0)
 b2_midi.seq_notes(b2_seq_2,track=1)
-b2_midi.seq_notes(b2_seq_3,track=2)
-b2_midi.write("music.mid")
+b2_midi.seq_notes(b2_seq_3,track=2)"""
+#b2_midi.write("music.mid")
+
+### beat 3
+beat3_1 = [
+    #Note(NOTES["C"],4,0.5),
+    #Note(NOTES["C"],4,0.5)
+    Rest(0.75),
+    Note(NOTES["C"],3,0.25)
+    ]
+#for i in range(2):
+#    beat3_1.append(Note(NOTES["A"],4,0.5,volume=100))
+
+beat3_2 = []
+for i in range(8):
+    beat3_2.append(Note(NOTES["C"],7,0.125,volume=30))
+
+beat3_3 = [
+    Rest(0.75),
+    Note(NOTES["C"],3,0.25)
+]
+
+beat3_4 = [
+    Note(NOTES["A"],4,0.25),
+    Rest(0.25),
+    Note(NOTES["A"],4,0.25),
+    Rest(0.25)
+]
+
+'''
+for i in range(4):
+    beat3_2.append(Rest(0.0625))
+    beat3_2.append(Rest(0.0625))
+    beat3_2.append(Rest(0.0625))
+    beat3_2.append(Note(NOTES["G"],5,0.0625))
+'''
+
+for i in range(4):
+    beat3_4+=beat3_4
+    beat3_3+=beat3_3
+    beat3_2+=beat3_2
+
+#[116,115,115]
+
+b3_seq_1 = NoteSeq(beat3_1)
+b3_seq_2 = NoteSeq(beat3_2)
+b3_seq_3 = NoteSeq(beat3_3)
+b3_seq_4 = NoteSeq(beat3_4)
+'''
+b3_midi = Midi(number_tracks=13, instrument=[115,115,116], tempo = 120)
+#b3_midi.seq_notes(b3_seq_1,track=0)
+b3_midi.seq_notes(b3_seq_2,track=0)
+b3_midi.seq_notes(b3_seq_3,track=1)
+b3_midi.seq_notes(b3_seq_4,track=2)
+#b3_midi.write("music.mid")
+'''
+'''
+def play(category):
+    if category=="thunderstorm" or category=="clouds":
+        b2_midi.write("music.mid")
+    elif category=="rain" or category=="drizzle" or category=="snow":
+        b3_midi.write("music.mid")
+    else:
+        b1_midi.write("music.mid")
+'''
+
+def play(w):
+    data = w.get_weather()
+    print(data)
+    instrument = int(str(data["time"]["percent"]).replace(".",''))%104
+    tempo = None
+    midi = None
+    if data["category"]=="Thunderstorm" or data["category"]=="Clouds":
+        #b2_midi.write("music.mid")
+        tempo = 65
+        b2_midi = Midi(number_tracks=4, instrument=[113,116,117,instrument], tempo = 65)
+        b2_midi.seq_notes(b2_seq_1,track=0)
+        b2_midi.seq_notes(b2_seq_2,track=1)
+        b2_midi.seq_notes(b2_seq_3,track=2)
+        midi = b2_midi
+    elif data["category"]=="Rain" or data["category"]=="Drizzle" or data["category"]=="Snow":
+        #b3_midi.write("music.mid")
+        tempo = 120
+        b3_midi = Midi(number_tracks=4, instrument=[115,115,116,instrument], tempo = 120)
+        b3_midi.seq_notes(b3_seq_2,track=0)
+        b3_midi.seq_notes(b3_seq_3,track=1)
+        b3_midi.seq_notes(b3_seq_4,track=2)
+        midi = b3_midi
+    else:
+        #b1_midi.write("music.mid")
+        tempo = 110
+        b1_midi = Midi(number_tracks=4, instrument=[115,115,116,instrument], tempo=110)
+        b1_midi.seq_notes(b1_seq_top,track=0)
+        b1_midi.seq_notes(b1_seq_bottom,track=1)
+        b1_midi.seq_notes(b1_seq_top,track=2)
+        midi = b1_midi
+
+    #octave = int(data["time"]["percent"]*10)
+    octave=5
+    #instrument = int(data["time"]["sunrise"]%128)
+    rhymthm = [0.125,0.125,0.25,0.125,0.125,0.25]
+    pitches = str(data["temp"]).replace('.','')
+    notes = []
+    for i in range(len(rhymthm)):
+        notes.append(Note(value=int(pitches[i%len(pitches)]),octave=octave,dur=rhymthm[i],volume=60))
+    for i in range(4):
+        notes+=notes
+    seq = NoteSeq(notes)
+    midi.seq_notes(seq,track=3)
+    midi.write("music.mid")
+
+test = weather_data.WeatherData("abu dhabi", "city")
+
+play(test)
