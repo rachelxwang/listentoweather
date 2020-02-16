@@ -86,14 +86,25 @@ class WeatherData:
 				"sunset":  self._curr_call["sys"]["sunset"],
 			},
 
+			# Units: Kelvin
 			"temp": self.get_temperature(),
 
+			# Units: hectopascals (hPa) - range will be approximately 870 - 1085
 			"pressure": self._curr_call["main"]["pressure"],
+
+			# Units: Percentage
 			"humidity": self._curr_call["main"]["humidity"],
 
+			# Units:
+			#   speed, gust:     meters per second (highest: ~113.3?)
+			#   deg (direction): meteorological degrees (degrees clockwise starting at North,
+			# 					 representing where the wind is COMING from)
 			"wind": self._curr_call["wind"],
+
+			# Units: Percentage
 			"clouds": self._curr_call["clouds"]["all"],
 
+			# Units: No idea
 			"visibility": self._curr_call["visibility"],
 		}
 
@@ -151,4 +162,4 @@ def more_than_x_mins(t1, t2, mins):
 	return abs(t1 - t2).seconds > (mins * 60)
 
 
-test = WeatherData("London", "city")
+test = WeatherData("chicago", "city")
