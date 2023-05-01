@@ -1,4 +1,4 @@
-Flask==1.1.1
+Flask==2.3.2
 google-cloud-datastore==1.10.0
 #pyknon==1.2
 #ipstack==0.1.4
